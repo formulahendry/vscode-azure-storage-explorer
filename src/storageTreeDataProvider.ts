@@ -11,8 +11,8 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
 
     constructor(context: vscode.ExtensionContext) {
         this.accountApi = vscode.extensions.getExtension<AzureAccount>("ms-vscode.azure-account")!.exports;
-        // this.accountApi.onFiltersChanged(this.onSubscriptionChanged);
-        // this.accountApi.onSessionsChanged(this.onSubscriptionChanged);
+        this.accountApi.onFiltersChanged(this.onSubscriptionChanged, this);
+        this.accountApi.onSessionsChanged(this.onSubscriptionChanged, this);
     }
 
     public getTreeItem(element: INode): vscode.TreeItem {
@@ -28,10 +28,7 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     }
 
     private async getSubscriptions(): Promise<SubscriptionNode[]> {
-        console.log("st1: " + this.accountApi.status);
-        await this.accountApi.waitForLogin();
-        console.log("st2: " + this.accountApi.status);
-        console.log("c: " + this.accountApi.filters.length);
+        await this.accountApi.waitForFilters();
         const azureResourceFilters = await this.accountApi.filters;
         const nodes = azureResourceFilters.map<SubscriptionNode>((azureResourceFilter) => {
             return new SubscriptionNode(azureResourceFilter);
