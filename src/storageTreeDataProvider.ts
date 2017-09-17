@@ -2,7 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { AzureAccount, AzureLoginStatus, AzureResourceFilter, AzureSession } from "./azure-account.api";
 import { INode } from "./model/INode";
-import { SubscriptionNode } from "./model/SubscriptionNode";
+import { SubscriptionNode } from "./model/subscriptionNode";
 
 export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     public _onDidChangeTreeData: vscode.EventEmitter<INode> = new vscode.EventEmitter<INode>();
