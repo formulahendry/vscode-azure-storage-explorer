@@ -18,10 +18,15 @@ export class SubscriptionNode implements INode {
     public async getChildren(azureAccount: AzureAccount): Promise<INode[]> {
         const client = new storageManagementClient(this.azureResourceFilter.session.credentials, this.azureResourceFilter.subscription.subscriptionId);
         const nodes = await client.storageAccounts.list().then((storageAccounts) => {
-            return storageAccounts.map((storageAccount) => {
-                return new StorageAccountNode(storageAccount);
+            return storageAccounts.map(async (storageAccount) => {
+                const storageAccountKeys = await client.storageAccounts.listKeys("azureiot", storageAccount.name).then((_storageAccountKeys) => {
+                    return _storageAccountKeys.keys;
+                });
+                return new StorageAccountNode(storageAccount, storageAccountKeys);
             });
         });
-        return nodes;
+        return Promise.all(nodes).then((_nodes) => {
+            return _nodes;
+        });
     }
 }

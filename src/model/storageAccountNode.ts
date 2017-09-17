@@ -5,7 +5,7 @@ import { AzureAccount, AzureResourceFilter } from "../azure-account.api";
 import { INode } from "./INode";
 
 export class StorageAccountNode implements INode {
-    constructor(private readonly storageAccount: StorageAccountModels.StorageAccount) {
+    constructor(private readonly storageAccount: StorageAccountModels.StorageAccount, private readonly storageAccountKeys: StorageAccountModels.StorageAccountKey[]) {
     }
 
     public getTreeItem(): vscode.TreeItem {
