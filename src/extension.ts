@@ -1,5 +1,6 @@
 "use strict";
 import * as vscode from "vscode";
+import { BlobNode } from "./model/blobNode";
 import { StorageTreeDataProvider} from "./storageTreeDataProvider";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -8,11 +9,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.window.registerTreeDataProvider("azureStorage", storageTreeDataProvider));
 
-    // const disposable = vscode.commands.registerCommand("extension.sayHello", () => {
-    //     vscode.window.showInformationMessage("Hello World!");
-    // });
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.getBlob", (blobNode: BlobNode) => {
+        blobNode.getBlob();
+    }));
 
-    // context.subscriptions.push(disposable);
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.downloadBlob", (blobNode: BlobNode) => {
+        blobNode.downloadBlob();
+    }));
 }
 
 export function deactivate() {

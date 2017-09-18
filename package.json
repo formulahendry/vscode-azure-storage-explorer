@@ -16,19 +16,23 @@
   "main": "./out/src/extension",
   "contributes": {
     "views": {
-      "explorer": [
-        {
-          "id": "azureStorage",
-          "name": "Azure Storage"
-        }
-      ]
+      "explorer": [{
+        "id": "azureStorage",
+        "name": "Azure Storage"
+      }]
     },
-    "commands": [
-      {
-        "command": "extension.sayHello",
-        "title": "Hello World"
-      }
-    ]
+    "commands": [{
+      "command": "azure-storage-explorer.downloadBlob",
+      "title": "Download",
+      "category": "Azure Storage"
+    }],
+    "menus": {
+      "view/item/context": [{
+        "command": "azure-storage-explorer.downloadBlob",
+        "when": "view == azureStorage && viewItem == blob",
+        "group": "azure-storage@1"
+      }]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

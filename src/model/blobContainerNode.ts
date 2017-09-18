@@ -25,7 +25,7 @@ export class BlobContainerNode implements INode {
                     resolve([new InfoNode(`Failed to list containers: ${error})`)]);
                 }
                 const blobNodes = result.entries.map((blob) => {
-                    return new BlobNode(blob);
+                    return new BlobNode(blob, this.container, this.blobService);
                 });
                 resolve(blobNodes);
             });
