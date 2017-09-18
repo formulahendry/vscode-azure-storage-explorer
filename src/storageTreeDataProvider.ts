@@ -19,7 +19,7 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
         return element.getTreeItem();
     }
 
-    public getChildren(element?: INode): Thenable<INode[]> {
+    public getChildren(element?: INode): Thenable<INode[]> | INode[] {
         if (!element) {
             return this.getSubscriptions();
         }

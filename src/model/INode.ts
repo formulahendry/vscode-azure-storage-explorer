@@ -5,5 +5,5 @@ export interface INode {
 
     getTreeItem(): vscode.TreeItem;
 
-    getChildren(azureAccount: AzureAccount): Promise<INode[]>;
+    getChildren(azureAccount?: AzureAccount): Promise<INode[]> | INode[];
 }

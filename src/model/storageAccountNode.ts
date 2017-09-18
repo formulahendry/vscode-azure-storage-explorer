@@ -1,7 +1,7 @@
 import storageManagementClient = require("azure-arm-storage");
 import * as vscode from "vscode";
 import * as StorageAccountModels from "../../node_modules/azure-arm-storage/lib/models";
-import { AzureAccount, AzureResourceFilter } from "../azure-account.api";
+import { BlobContainerLabelNode } from "./blobContainerLabelNode";
 import { INode } from "./INode";
 
 export class StorageAccountNode implements INode {
@@ -15,7 +15,7 @@ export class StorageAccountNode implements INode {
         };
     }
 
-    public getChildren(azureAccount: AzureAccount): Promise<INode[]> {
-        return [];
+    public getChildren(): INode[] {
+        return [new BlobContainerLabelNode(this.storageAccount, this.storageAccountKeys)];
     }
 }
