@@ -27,6 +27,10 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
         return element.getChildren(this.accountApi);
     }
 
+    public refresh(element?: INode): void {
+        this._onDidChangeTreeData.fire(element);
+    }
+
     private async getSubscriptions(): Promise<SubscriptionNode[]> {
         await this.accountApi.waitForFilters();
         const azureResourceFilters = await this.accountApi.filters;
@@ -38,6 +42,6 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     }
 
     private onSubscriptionChanged() {
-        this._onDidChangeTreeData.fire();
+        this.refresh();
     }
 }

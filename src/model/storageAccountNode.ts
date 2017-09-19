@@ -12,6 +12,7 @@ export class StorageAccountNode implements INode {
         return {
             label: this.storageAccount.name,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            contextValue: "storageAccount",
         };
     }
 

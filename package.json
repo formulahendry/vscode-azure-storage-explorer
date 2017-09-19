@@ -22,14 +22,67 @@
       }]
     },
     "commands": [{
+      "command": "azure-storage-explorer.refresh",
+      "title": "Refresh",
+      "category": "Azure Storage"
+    }, {
+      "command": "azure-storage-explorer.createContainer",
+      "title": "Create Container",
+      "category": "Azure Storage"
+    }, {
+      "command": "azure-storage-explorer.deleteContainer",
+      "title": "Delete Container",
+      "category": "Azure Storage"
+    }, {
       "command": "azure-storage-explorer.downloadBlob",
-      "title": "Download",
+      "title": "Download Blob",
+      "category": "Azure Storage"
+    }, {
+      "command": "azure-storage-explorer.deleteBlob",
+      "title": "Delete Blob",
+      "category": "Azure Storage"
+    }, {
+      "command": "azure-storage-explorer.uploadBlob",
+      "title": "Upload Blob",
       "category": "Azure Storage"
     }],
     "menus": {
+      "view/title": [{
+        "command": "azure-storage-explorer.refresh",
+        "when": "view == azureStorage",
+        "group": "navigation@1"
+      }],
       "view/item/context": [{
         "command": "azure-storage-explorer.downloadBlob",
         "when": "view == azureStorage && viewItem == blob",
+        "group": "azure-storage@1"
+      }, {
+        "command": "azure-storage-explorer.deleteBlob",
+        "when": "view == azureStorage && viewItem == blob",
+        "group": "azure-storage@2"
+      }, {
+        "command": "azure-storage-explorer.refresh",
+        "when": "view == azureStorage && viewItem == blobContainer",
+        "group": "azure-storage@1"
+      }, {
+        "command": "azure-storage-explorer.uploadBlob",
+        "when": "view == azureStorage && viewItem == blobContainer",
+        "group": "azure-storage@2"
+      }, {
+        "command": "azure-storage-explorer.deleteContainer",
+        "when": "view == azureStorage && viewItem == blobContainer",
+        "group": "azure-storage@3"
+      }, {
+        "command": "azure-storage-explorer.refresh",
+        "when": "view == azureStorage && viewItem == blobContainerLabel",
+        "group": "azure-storage@1"
+      }, {
+        "command": "azure-storage-explorer.createContainer",
+        "when": "view == azureStorage && viewItem == blobContainerLabel",
+        "group": "azure-storage@2"
+      }, {
+        "command": "azure-storage-explorer.refresh",
+        "when": "view == azureStorage && viewItem == subscription",
         "group": "azure-storage@1"
       }]
     }

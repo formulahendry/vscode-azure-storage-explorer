@@ -1,6 +1,7 @@
 import azureStorage = require("azure-storage");
 import * as vscode from "vscode";
 import * as StorageAccountModels from "../../node_modules/azure-arm-storage/lib/models";
+import { StorageTreeDataProvider} from "../storageTreeDataProvider";
 import { BlobContainerNode } from "./blobContainerNode";
 import { InfoNode } from "./infoNode";
 import { INode } from "./INode";
@@ -11,8 +12,9 @@ export class BlobContainerLabelNode implements INode {
 
     public getTreeItem(): vscode.TreeItem {
         return {
-            label: "Blob Container",
+            label: "[Blob Container]",
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            contextValue: "blobContainerLabel",
         };
     }
 
@@ -24,9 +26,36 @@ export class BlobContainerLabelNode implements INode {
                     resolve([new InfoNode(`Failed to list containers: ${error})`)]);
                 }
                 const containerNodes = result.entries.map((container) => {
-                    return new BlobContainerNode(container, blobService);
+                    return new BlobContainerNode(container, blobService, this);
                 });
                 resolve(containerNodes);
+            });
+        });
+    }
+
+    public createContainer(storageTreeDataProvider: StorageTreeDataProvider) {
+        const blobService = azureStorage.createBlobService(this.storageAccount.name, this.storageAccountKeys[0].value);
+        vscode.window.showInputBox({
+            prompt: "Enter container name",
+        }).then(async (containerName: string) => {
+            if (!containerName) {
+                return;
+            }
+            vscode.window.withProgress({
+                title: `Creating container [${containerName}] ...`,
+                location: vscode.ProgressLocation.Window,
+            }, async (progress) => {
+                await new Promise((resolve, reject) => {
+                    blobService.createContainerIfNotExists(containerName, (error, result, response) => {
+                        if (error) {
+                            reject(error.message);
+                        } else {
+                            // vscode.window.showInformationMessage(`Container [${containerName}] is created.`);
+                            storageTreeDataProvider.refresh(this);
+                            resolve();
+                        }
+                    });
+                });
             });
         });
     }

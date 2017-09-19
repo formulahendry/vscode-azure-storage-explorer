@@ -12,6 +12,7 @@ export class SubscriptionNode implements INode {
         return {
             label: this.azureResourceFilter.subscription.displayName,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            contextValue: "subscription",
         };
     }
 
