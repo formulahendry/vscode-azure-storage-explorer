@@ -1,6 +1,4 @@
-
 import * as vscode from "vscode";
-import { AzureAccount } from "../azure-account.api";
 import { INode } from "./INode";
 
 export class InfoNode implements INode {

@@ -1,7 +1,9 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { AzureAccount, AzureLoginStatus, AzureResourceFilter, AzureSession } from "./azure-account.api";
+import { InfoNode } from "./model/infoNode";
 import { INode } from "./model/INode";
+import { ToSignInNode } from "./model/toSignInNode";
 import { SubscriptionNode } from "./model/subscriptionNode";
 
 export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
@@ -20,6 +22,15 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     }
 
     public getChildren(element?: INode): Thenable<INode[]> | INode[] {
+        if (this.accountApi.status === "Initializing" || this.accountApi.status === "LoggingIn" ) {
+            return [new InfoNode("Loading...")];
+        }
+
+        if (this.accountApi.status === "LoggedOut") {
+            vscode.commands.executeCommand("azure-account.login");
+            return [new ToSignInNode()];
+        }
+
         if (!element) {
             return this.getSubscriptions();
         }
