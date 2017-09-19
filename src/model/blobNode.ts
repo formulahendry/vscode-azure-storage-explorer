@@ -1,4 +1,6 @@
 import azureStorage = require("azure-storage");
+import * as os from "os";
+import * as path from "path";
 import * as vscode from "vscode";
 import * as azureStorageTypings from "../../node_modules/azure-storage/typings/azure-storage/azure-storage";
 import { AzureAccount } from "../azure-account.api";
@@ -33,15 +35,21 @@ export class BlobNode implements INode {
     }
 
     public downloadBlob() {
-        this.blobService.getBlobToLocalFile(this.container.name, this.blob.name, "/Users/junhan/Desktop/Try/test/vsc-test.txt", (error, result, response) => {
-            if (error) {
-                vscode.window.showErrorMessage(error.message);
-            } else {
-                console.log(result);
-                Utility.appendLine(JSON.stringify(result, null, 2));
-                // vscode.window.showInformationMessage(result);
-            }
+        const folder = vscode.workspace.workspaceFolders[0] ? vscode.workspace.workspaceFolders[0].uri.fsPath : os.tmpdir();
+        vscode.window.showInputBox({
+            prompt: "Set download file path",
+            value: path.join(folder, this.blob.name),
+        }).then(async (filePath: string) => {
+            this.blobService.getBlobToLocalFile(this.container.name, this.blob.name, filePath, (error, result, response) => {
+                if (error) {
+                    vscode.window.showErrorMessage(error.message);
+                } else {
+                    console.log(result);
+                    Utility.appendLine(JSON.stringify(result, null, 2));
+                    // vscode.window.showInformationMessage(result);
+                }
+            });
+            vscode.window.showInformationMessage(this.blob.name);
         });
-        vscode.window.showInformationMessage(this.blob.name);
     }
 }
