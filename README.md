@@ -11,9 +11,9 @@ Azure Storage Explorer for VS Code. Currently, it supports management of Azure B
 * Delete Blob Container
 * List Blobs
 * View Blob information
-* downloadBlob
-* uploadBlob
-* deleteBlob
+* Download Blob
+* Upload Blob
+* Delete Blob
 
 ## Prerequisites
 
