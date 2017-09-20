@@ -29,7 +29,7 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
         }
 
         if (this.accountApi.status === "LoggedOut") {
-            vscode.commands.executeCommand("azure-account.login");
+            // vscode.commands.executeCommand("azure-account.login");
             return [new ToSignInNode()];
         }
 
