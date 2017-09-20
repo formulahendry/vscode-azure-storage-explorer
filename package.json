@@ -9,8 +9,24 @@
     "vscode": "^1.16.0"
   },
   "categories": [
-    "Other"
+    "Azure"
   ],
+  "keywords": [
+    "Azure",
+    "Storage",
+    "Blob",
+    "Explorer",
+    "Cloud"
+  ],
+  "bugs": {
+    "url": "https://github.com/formulahendry/vscode-azure-storage-explorer/issues",
+    "email": "formulahendry@gmail.com"
+  },
+  "homepage": "https://github.com/formulahendry/vscode-azure-storage-explorer/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formulahendry/vscode-azure-storage-explorer.git"
+  },
   "activationEvents": [
     "onView:azureStorage"
   ],
