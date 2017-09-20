@@ -23,12 +23,12 @@ Azure Storage Explorer for VS Code. Currently, it supports management of Azure B
 
 1. Click to sign in 
     
-  ![sign-in](images/sign-in.png)
+  ![sign-in](images/sign-in.PNG)
 
 2. After sign-in, click the `+` button to select Azure Subscription
 3. Wait for a moment, the Blob storage list will be shown
 
-  ![explorer](images/explorer.png)
+  ![explorer](images/explorer.PNG)
 
 ## Telemetry data
 
