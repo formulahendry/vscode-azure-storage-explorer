@@ -1,4 +1,5 @@
 import azureStorage = require("azure-storage");
+import * as path from "path";
 import * as vscode from "vscode";
 import * as StorageAccountModels from "../../node_modules/azure-arm-storage/lib/models";
 import { StorageTreeDataProvider} from "../storageTreeDataProvider";
@@ -15,6 +16,7 @@ export class BlobContainerLabelNode implements INode {
             label: "[Blob Container]",
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "blobContainerLabel",
+            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
         };
     }
 

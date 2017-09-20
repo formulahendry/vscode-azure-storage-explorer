@@ -26,6 +26,7 @@ export class BlobNode implements INode {
                 arguments: [this],
             },
             contextValue: "blob",
+            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "Document_16x.png"),
         };
     }
 

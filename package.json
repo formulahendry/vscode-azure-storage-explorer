@@ -4,6 +4,7 @@
   "description": "Azure Storage Explorer",
   "version": "0.0.1",
   "publisher": "formulahendry",
+  "icon": "logo.png",
   "engines": {
     "vscode": "^1.16.0"
   },
@@ -16,75 +17,124 @@
   "main": "./out/src/extension",
   "contributes": {
     "views": {
-      "explorer": [{
-        "id": "azureStorage",
-        "name": "Azure Storage"
-      }]
+      "explorer": [
+        {
+          "id": "azureStorage",
+          "name": "Azure Storage"
+        }
+      ]
     },
-    "commands": [{
-      "command": "azure-storage-explorer.refresh",
-      "title": "Refresh",
-      "category": "Azure Storage"
-    }, {
-      "command": "azure-storage-explorer.createContainer",
-      "title": "Create Container",
-      "category": "Azure Storage"
-    }, {
-      "command": "azure-storage-explorer.deleteContainer",
-      "title": "Delete Container",
-      "category": "Azure Storage"
-    }, {
-      "command": "azure-storage-explorer.downloadBlob",
-      "title": "Download Blob",
-      "category": "Azure Storage"
-    }, {
-      "command": "azure-storage-explorer.deleteBlob",
-      "title": "Delete Blob",
-      "category": "Azure Storage"
-    }, {
-      "command": "azure-storage-explorer.uploadBlob",
-      "title": "Upload Blob",
-      "category": "Azure Storage"
-    }],
-    "menus": {
-      "view/title": [{
+    "commands": [
+      {
         "command": "azure-storage-explorer.refresh",
-        "when": "view == azureStorage",
-        "group": "navigation@1"
-      }],
-      "view/item/context": [{
-        "command": "azure-storage-explorer.downloadBlob",
-        "when": "view == azureStorage && viewItem == blob",
-        "group": "azure-storage@1"
-      }, {
-        "command": "azure-storage-explorer.deleteBlob",
-        "when": "view == azureStorage && viewItem == blob",
-        "group": "azure-storage@2"
-      }, {
-        "command": "azure-storage-explorer.refresh",
-        "when": "view == azureStorage && viewItem == blobContainer",
-        "group": "azure-storage@1"
-      }, {
-        "command": "azure-storage-explorer.uploadBlob",
-        "when": "view == azureStorage && viewItem == blobContainer",
-        "group": "azure-storage@2"
-      }, {
-        "command": "azure-storage-explorer.deleteContainer",
-        "when": "view == azureStorage && viewItem == blobContainer",
-        "group": "azure-storage@3"
-      }, {
-        "command": "azure-storage-explorer.refresh",
-        "when": "view == azureStorage && viewItem == blobContainerLabel",
-        "group": "azure-storage@1"
-      }, {
+        "title": "Refresh",
+        "category": "Azure Storage",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "azure-storage-explorer.selectSubscriptions",
+        "title": "Select Subscriptions",
+        "category": "Azure Storage",
+        "icon": {
+          "light": "resources/light/selectSubscriptions.svg",
+          "dark": "resources/dark/selectSubscriptions.svg"
+        }
+      },
+      {
         "command": "azure-storage-explorer.createContainer",
-        "when": "view == azureStorage && viewItem == blobContainerLabel",
-        "group": "azure-storage@2"
-      }, {
-        "command": "azure-storage-explorer.refresh",
-        "when": "view == azureStorage && viewItem == subscription",
-        "group": "azure-storage@1"
-      }]
+        "title": "Create Container",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteContainer",
+        "title": "Delete Container",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.downloadBlob",
+        "title": "Download Blob",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteBlob",
+        "title": "Delete Blob",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.uploadBlob",
+        "title": "Upload Blob",
+        "category": "Azure Storage"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage",
+          "group": "navigation@1"
+        },
+        {
+          "command": "azure-storage-explorer.selectSubscriptions",
+          "when": "view == azureStorage",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "azure-storage-explorer.downloadBlob",
+          "when": "view == azureStorage && viewItem == blob",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.deleteBlob",
+          "when": "view == azureStorage && viewItem == blob",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == blobContainer",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.uploadBlob",
+          "when": "view == azureStorage && viewItem == blobContainer",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.deleteContainer",
+          "when": "view == azureStorage && viewItem == blobContainer",
+          "group": "azure-storage@3"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == blobContainerLabel",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.createContainer",
+          "when": "view == azureStorage && viewItem == blobContainerLabel",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == subscription",
+          "group": "azure-storage@1"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Azure Storage Explorer",
+      "properties": {
+        "azure-storage-explorer.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable anonymous usage collection."
+        }
+      }
     }
   },
   "scripts": {
@@ -104,6 +154,7 @@
     "vscode": "^1.1.5"
   },
   "dependencies": {
+    "applicationinsights": "^0.21.0",
     "azure-arm-resource": "^2.0.0-preview",
     "azure-arm-storage": "^3.0.0-preview",
     "azure-storage": "^2.5.0",

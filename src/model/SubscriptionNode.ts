@@ -1,4 +1,5 @@
 import storageManagementClient = require("azure-arm-storage");
+import * as path from "path";
 import * as vscode from "vscode";
 import { AzureAccount, AzureResourceFilter } from "../azure-account.api";
 import { INode } from "./INode";
@@ -13,6 +14,7 @@ export class SubscriptionNode implements INode {
             label: this.azureResourceFilter.subscription.displayName,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "subscription",
+            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "AzureSubscription_16x.png"),
         };
     }
 

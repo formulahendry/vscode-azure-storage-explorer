@@ -20,6 +20,7 @@ export class BlobContainerNode implements INode {
             label: this.container.name,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "blobContainer",
+            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
         };
     }
 

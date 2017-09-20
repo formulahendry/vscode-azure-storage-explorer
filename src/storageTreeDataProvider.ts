@@ -1,10 +1,12 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { AzureAccount, AzureLoginStatus, AzureResourceFilter, AzureSession } from "./azure-account.api";
+import { AppInsightsClient } from "./common/appInsightsClient";
 import { InfoNode } from "./model/infoNode";
 import { INode } from "./model/INode";
-import { ToSignInNode } from "./model/toSignInNode";
+import { SelectSubscriptionsNode } from "./model/selectSubscriptionsNode";
 import { SubscriptionNode } from "./model/subscriptionNode";
+import { ToSignInNode } from "./model/toSignInNode";
 
 export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     public _onDidChangeTreeData: vscode.EventEmitter<INode> = new vscode.EventEmitter<INode>();
@@ -22,7 +24,7 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
     }
 
     public getChildren(element?: INode): Thenable<INode[]> | INode[] {
-        if (this.accountApi.status === "Initializing" || this.accountApi.status === "LoggingIn" ) {
+        if (this.accountApi.status === "Initializing" || this.accountApi.status === "LoggingIn") {
             return [new InfoNode("Loading...")];
         }
 
@@ -42,13 +44,16 @@ export class StorageTreeDataProvider implements vscode.TreeDataProvider<INode> {
         this._onDidChangeTreeData.fire(element);
     }
 
-    private async getSubscriptions(): Promise<SubscriptionNode[]> {
-        await this.accountApi.waitForFilters();
+    private async getSubscriptions(): Promise<SubscriptionNode[] | SelectSubscriptionsNode[]> {
+        // await this.accountApi.waitForFilters();
+        if (this.accountApi.filters.length === 0) {
+            return [new SelectSubscriptionsNode()];
+        }
         const azureResourceFilters = await this.accountApi.filters;
         const nodes = azureResourceFilters.map<SubscriptionNode>((azureResourceFilter) => {
             return new SubscriptionNode(azureResourceFilter);
         });
-
+        AppInsightsClient.sendEvent("loadSubscriptions", { SubscriptionCount: nodes.length.toString() });
         return nodes;
     }
 
