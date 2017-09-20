@@ -1,8 +1,8 @@
 "use strict";
 import * as vscode from "vscode";
 import { AppInsightsClient } from "./common/appInsightsClient";
-import { BlobContainerLabelNode } from "./model/BlobContainerLabelNode";
-import { BlobContainerNode } from "./model/BlobContainerNode";
+import { BlobContainerLabelNode } from "./model/blobContainerLabelNode";
+import { BlobContainerNode } from "./model/blobContainerNode";
 import { BlobNode } from "./model/blobNode";
 import { INode } from "./model/INode";
 import { StorageTreeDataProvider} from "./storageTreeDataProvider";
