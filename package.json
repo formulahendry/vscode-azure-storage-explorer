@@ -158,7 +158,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "tslint": "tslint -t verbose src/**/*.ts",
+    "tslint": "tslint -t verbose src/**/*.ts --exclude src/**/*.d.ts",
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
