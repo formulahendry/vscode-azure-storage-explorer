@@ -2,7 +2,7 @@
   "name": "azure-storage-explorer",
   "displayName": "Azure Storage Explorer",
   "description": "Manage Azure Storage in VS Code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "formulahendry",
   "icon": "logo.png",
   "engines": {
@@ -75,6 +75,11 @@
         "category": "Azure Storage"
       },
       {
+        "command": "azure-storage-explorer.copyBlobUrl",
+        "title": "Copy Blob Url",
+        "category": "Azure Storage"
+      },
+      {
         "command": "azure-storage-explorer.deleteBlob",
         "title": "Delete Blob",
         "category": "Azure Storage"
@@ -105,9 +110,14 @@
           "group": "azure-storage@1"
         },
         {
-          "command": "azure-storage-explorer.deleteBlob",
+          "command": "azure-storage-explorer.copyBlobUrl",
           "when": "view == azureStorage && viewItem == blob",
           "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.deleteBlob",
+          "when": "view == azureStorage && viewItem == blob",
+          "group": "azure-storage@3"
         },
         {
           "command": "azure-storage-explorer.refresh",
@@ -174,6 +184,7 @@
     "azure-arm-resource": "^2.0.0-preview",
     "azure-arm-storage": "^3.0.0-preview",
     "azure-storage": "^2.5.0",
+    "copy-paste": "^1.3.0",
     "ms-rest": "^2.2.2",
     "ms-rest-azure": "^2.3.1"
   },

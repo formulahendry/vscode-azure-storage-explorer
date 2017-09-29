@@ -1,4 +1,5 @@
 import azureStorage = require("azure-storage");
+import * as copypaste from "copy-paste";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
@@ -66,6 +67,13 @@ export class BlobNode implements INode {
                     });
                 });
             });
+        });
+    }
+
+    public copyBlobUrl() {
+        const url = this.blobService.getUrl(this.container.name, this.blob.name);
+        copypaste.copy(url, () => {
+            vscode.window.showInformationMessage(`'${url}' is copied to clipboard.`);
         });
     }
 

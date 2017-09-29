@@ -39,6 +39,11 @@ export function activate(context: vscode.ExtensionContext) {
         blobNode.downloadBlob();
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.copyBlobUrl", (blobNode: BlobNode) => {
+        AppInsightsClient.sendEvent("copyBlobUrl");
+        blobNode.copyBlobUrl();
+    }));
+
     context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.deleteBlob", (blobNode: BlobNode) => {
         AppInsightsClient.sendEvent("deleteBlob");
         blobNode.deleteBlob(storageTreeDataProvider);
