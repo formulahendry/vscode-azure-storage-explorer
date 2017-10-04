@@ -4,15 +4,15 @@ import * as path from "path";
 import * as vscode from "vscode";
 import * as azureStorageTypings from "../../node_modules/azure-storage/typings/azure-storage/azure-storage";
 import { AzureAccount } from "../azure-account.api";
-import { StorageTreeDataProvider} from "../storageTreeDataProvider";
+import { StorageTreeDataProvider } from "../storageTreeDataProvider";
 import { BlobNode } from "./blobNode";
 import { InfoNode } from "./infoNode";
 import { INode } from "./INode";
 
 export class BlobContainerNode implements INode {
     constructor(private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,
-                private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
-                private readonly blobContainerLabelNode: INode) {
+        private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
+        private readonly blobContainerLabelNode: INode) {
     }
 
     public getTreeItem(): vscode.TreeItem {
@@ -38,46 +38,37 @@ export class BlobContainerNode implements INode {
         });
     }
 
-    public uploadBlob(storageTreeDataProvider: StorageTreeDataProvider) {
-        let defaultFilePath = "";
-        if (vscode.window.activeTextEditor) {
-            defaultFilePath = vscode.window.activeTextEditor.document.fileName;
-        } else if (vscode.workspace.workspaceFolders[0]) {
-            defaultFilePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    public async uploadBlob(storageTreeDataProvider: StorageTreeDataProvider) {
+        const options: vscode.OpenDialogOptions = {
+            openLabel: "Upload"
+        };
+        const filePathUri = await vscode.window.showOpenDialog(options);
+        if (!filePathUri) {
+            return;
         }
-        vscode.window.showInputBox({
-            prompt: "Enter file to upload",
-            value: defaultFilePath,
-        }).then(async (filePath: string) => {
-            if (!filePath) {
-                return;
-            }
-            if (!fs.existsSync(filePath)) {
-                vscode.window.showWarningMessage(`${filePath} does not exist.`);
-                return;
-            }
-            vscode.window.showInputBox({
-                prompt: "Enter blob name",
-                value: path.basename(filePath),
-            }).then(async (blobName: string) => {
-                if (!blobName) {
-                    return;
-                }
-                vscode.window.withProgress({
-                    title: `Uploading ${filePath} to ${this.container.name} ...`,
-                    location: vscode.ProgressLocation.Window,
-                }, async (progress) => {
-                    await new Promise((resolve, reject) => {
-                        this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
-                            if (error) {
-                                reject(error.message);
-                            } else {
-                                // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
-                                storageTreeDataProvider.refresh(this);
-                                resolve();
-                            }
-                        });
-                    });
+
+        const filePath = filePathUri[0].fsPath;
+        if (!fs.existsSync(filePath)) {
+            vscode.window.showWarningMessage(`${filePath} does not exist.`);
+            return;
+        }
+        const blobName = path.basename(filePath);
+        if (!blobName) {
+            return;
+        }
+        vscode.window.withProgress({
+            title: `Uploading ${filePath} to ${this.container.name} ...`,
+            location: vscode.ProgressLocation.Window,
+        }, async (progress) => {
+            await new Promise((resolve, reject) => {
+                this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
+                    if (error) {
+                        reject(error.message);
+                    } else {
+                        // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
+                        storageTreeDataProvider.refresh(this);
+                        resolve();
+                    }
                 });
             });
         });
