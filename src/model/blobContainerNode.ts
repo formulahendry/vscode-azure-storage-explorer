@@ -11,8 +11,8 @@ import { INode } from "./INode";
 
 export class BlobContainerNode implements INode {
     constructor(private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,
-        private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
-        private readonly blobContainerLabelNode: INode) {
+                private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
+                private readonly blobContainerLabelNode: INode) {
     }
 
     public getTreeItem(): vscode.TreeItem {
@@ -40,7 +40,7 @@ export class BlobContainerNode implements INode {
 
     public async uploadBlob(storageTreeDataProvider: StorageTreeDataProvider) {
         const options: vscode.OpenDialogOptions = {
-            openLabel: "Upload"
+            openLabel: "Upload",
         };
         const filePathUri = await vscode.window.showOpenDialog(options);
         if (!filePathUri) {

@@ -13,9 +13,9 @@ import { INode } from "./INode";
 
 export class BlobNode implements INode {
     constructor(private readonly blob: azureStorageTypings.services.blob.blobservice.BlobService.BlobResult,
-        private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,
-        private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
-        private readonly blobContainerNode: INode) {
+                private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,
+                private readonly blobService: azureStorageTypings.services.blob.blobservice.BlobService,
+                private readonly blobContainerNode: INode) {
     }
 
     public getTreeItem(): vscode.TreeItem {
