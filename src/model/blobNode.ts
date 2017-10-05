@@ -40,7 +40,10 @@ export class BlobNode implements INode {
     }
 
     public async downloadBlob() {
-        const filePathUri = await vscode.window.showSaveDialog({});
+        const options: vscode.OpenDialogOptions = {
+            defaultUri: vscode.Uri.file(this.blob.name),
+        };
+        const filePathUri = await vscode.window.showSaveDialog(options);
         if (!filePathUri) {
             return;
         }
