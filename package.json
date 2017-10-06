@@ -2,7 +2,7 @@
   "name": "azure-storage-explorer",
   "displayName": "Azure Storage Explorer",
   "description": "Manage Azure Storage in VS Code",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "formulahendry",
   "icon": "logo.png",
   "engines": {
