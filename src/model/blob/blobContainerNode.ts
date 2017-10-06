@@ -2,12 +2,12 @@ import azureStorage = require("azure-storage");
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as azureStorageTypings from "../../node_modules/azure-storage/typings/azure-storage/azure-storage";
-import { AzureAccount } from "../azure-account.api";
-import { StorageTreeDataProvider } from "../storageTreeDataProvider";
+import * as azureStorageTypings from "../../../node_modules/azure-storage/typings/azure-storage/azure-storage";
+import { AzureAccount } from "../../azure-account.api";
+import { StorageTreeDataProvider } from "../../storageTreeDataProvider";
 import { BlobNode } from "./blobNode";
-import { InfoNode } from "./infoNode";
-import { INode } from "./INode";
+import { InfoNode } from "../infoNode";
+import { INode } from "../INode";
 
 export class BlobContainerNode implements INode {
     constructor(private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,
@@ -20,7 +20,7 @@ export class BlobContainerNode implements INode {
             label: this.container.name,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "blobContainer",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
         };
     }
 
@@ -28,7 +28,7 @@ export class BlobContainerNode implements INode {
         return new Promise<INode[]>((resolve, reject) => {
             this.blobService.listBlobsSegmented(this.container.name, null, (error, result, response) => {
                 if (error) {
-                    resolve([new InfoNode(`Failed to list containers: ${error})`)]);
+                    resolve([new InfoNode(`Failed to list blobs: ${error})`)]);
                 }
                 const blobNodes = result.entries.map((blob) => {
                     return new BlobNode(blob, this.container, this.blobService, this);

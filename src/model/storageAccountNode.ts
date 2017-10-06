@@ -2,7 +2,8 @@ import storageManagementClient = require("azure-arm-storage");
 import * as path from "path";
 import * as vscode from "vscode";
 import * as StorageAccountModels from "../../node_modules/azure-arm-storage/lib/models";
-import { BlobContainerLabelNode } from "./blobContainerLabelNode";
+import { BlobContainerLabelNode } from "./blob/blobContainerLabelNode";
+import { FileShareLabelNode } from "./file/fileShareLabelNode";
 import { INode } from "./INode";
 
 export class StorageAccountNode implements INode {
@@ -19,6 +20,7 @@ export class StorageAccountNode implements INode {
     }
 
     public getChildren(): INode[] {
-        return [new BlobContainerLabelNode(this.storageAccount, this.storageAccountKeys)];
+        return [new BlobContainerLabelNode(this.storageAccount, this.storageAccountKeys),
+                new FileShareLabelNode(this.storageAccount, this.storageAccountKeys)];
     }
 }

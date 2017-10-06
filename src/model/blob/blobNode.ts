@@ -4,12 +4,12 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as azureStorageTypings from "../../node_modules/azure-storage/typings/azure-storage/azure-storage";
-import { AzureAccount } from "../azure-account.api";
-import { Utility } from "../common/utility";
-import { StorageTreeDataProvider } from "../storageTreeDataProvider";
-import { InfoNode } from "./infoNode";
-import { INode } from "./INode";
+import * as azureStorageTypings from "../../../node_modules/azure-storage/typings/azure-storage/azure-storage";
+import { AzureAccount } from "../../azure-account.api";
+import { Utility } from "../../common/utility";
+import { StorageTreeDataProvider } from "../../storageTreeDataProvider";
+import { InfoNode } from "../infoNode";
+import { INode } from "../INode";
 
 export class BlobNode implements INode {
     constructor(private readonly blob: azureStorageTypings.services.blob.blobservice.BlobService.BlobResult,
@@ -27,7 +27,7 @@ export class BlobNode implements INode {
                 arguments: [this],
             },
             contextValue: "blob",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "resources", "Document_16x.png"),
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "Document_16x.png"),
         };
     }
 

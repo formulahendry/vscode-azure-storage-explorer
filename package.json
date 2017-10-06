@@ -88,6 +88,11 @@
         "command": "azure-storage-explorer.uploadBlob",
         "title": "Upload Blob",
         "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.downloadFile",
+        "title": "Download File",
+        "category": "Azure Storage"
       }
     ],
     "menus": {
@@ -147,6 +152,21 @@
         {
           "command": "azure-storage-explorer.refresh",
           "when": "view == azureStorage && viewItem == subscription",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == fileShareLabel",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == fileShare",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.downloadFile",
+          "when": "view == azureStorage && viewItem == file",
           "group": "azure-storage@1"
         }
       ]

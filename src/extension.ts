@@ -1,9 +1,10 @@
 "use strict";
 import * as vscode from "vscode";
 import { AppInsightsClient } from "./common/appInsightsClient";
-import { BlobContainerLabelNode } from "./model/blobContainerLabelNode";
-import { BlobContainerNode } from "./model/blobContainerNode";
-import { BlobNode } from "./model/blobNode";
+import { BlobContainerLabelNode } from "./model/blob/blobContainerLabelNode";
+import { BlobContainerNode } from "./model/blob/blobContainerNode";
+import { BlobNode } from "./model/blob/blobNode";
+import { FileNode } from "./model/file/fileNode";
 import { INode } from "./model/INode";
 import { StorageTreeDataProvider} from "./storageTreeDataProvider";
 
@@ -57,6 +58,11 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.deleteContainer", (blobContainer: BlobContainerNode) => {
         AppInsightsClient.sendEvent("deleteContainer");
         blobContainer.deleteContainer(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.downloadFile", (fileNode: FileNode) => {
+        AppInsightsClient.sendEvent("downloadFile");
+        fileNode.downloadFile();
     }));
 }
 
