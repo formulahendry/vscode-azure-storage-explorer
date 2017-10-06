@@ -27,17 +27,6 @@ export class FileShareNode implements INode {
 
     public getChildren(azureAccount: AzureAccount): Promise<INode[]> {
         return FileUtility.listFilesAndDirectories(this.fileShare, this.fileService, this, "");
-        // return new Promise<INode[]>((resolve, reject) => {
-        //     this.fileService.listFilesAndDirectoriesSegmented(this.fileShare.name, "", null , (error, result, response) => {
-        //         if (error) {
-        //             resolve([new InfoNode(`Failed to list file shares: ${error})`)]);
-        //         }
-        //         const fileNodes = result.entries.files.map((file) => {
-        //             return new FileNode(file, this.fileShare, this.fileService, this);
-        //         });
-        //         resolve(fileNodes);
-        //     });
-        // });
     }
 
     public async uploadFile(storageTreeDataProvider: StorageTreeDataProvider) {
