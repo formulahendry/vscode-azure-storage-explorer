@@ -17,7 +17,7 @@ export class DirectoryNode implements INode {
                 private readonly directoryPath: string,
                 private readonly fileShare: azureStorageTypings.services.file.FileService.ShareResult,
                 private readonly fileService: azureStorageTypings.services.file.FileService,
-                private readonly fileShareNode: INode) {
+                private readonly fileShareOrDirectoryNode: INode) {
     }
 
     public getTreeItem(): vscode.TreeItem {
@@ -25,7 +25,7 @@ export class DirectoryNode implements INode {
             label: this.directory.name,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "directory",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "Document_16x.png"),
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "Folder_16x.png"),
         };
     }
 
@@ -33,72 +33,42 @@ export class DirectoryNode implements INode {
         return FileUtility.listFilesAndDirectories(this.fileShare, this.fileService, this, path.join(this.directoryPath, this.directory.name));
     }
 
-    // public getBlob() {
-    //     Utility.appendLine(JSON.stringify(this.blob, null, 2));
-    // }
+    public async uploadFile(storageTreeDataProvider: StorageTreeDataProvider) {
+        FileUtility.uploadFile(storageTreeDataProvider, this.fileShare, this.fileService, this, path.join(this.directoryPath, this.directory.name));
+    }
 
-    // public async downloadBlob() {
-    //     const options: vscode.OpenDialogOptions = {
-    //         defaultUri: vscode.Uri.file(this.blob.name),
-    //     };
-    //     const filePathUri = await vscode.window.showSaveDialog(options);
-    //     if (!filePathUri) {
-    //         return;
-    //     }
+    public async createDirectory(storageTreeDataProvider: StorageTreeDataProvider) {
+        FileUtility.createDirectory(storageTreeDataProvider, this.fileShare, this.fileService, this, path.join(this.directoryPath, this.directory.name));
+    }
 
-    //     const filePath = filePathUri.fsPath;
-    //     vscode.window.withProgress({
-    //         title: `Downloading blob to ${filePath} ...`,
-    //         location: vscode.ProgressLocation.Window,
-    //     }, async (progress) => {
-    //         await new Promise((resolve, reject) => {
-    //             this.blobService.getBlobToLocalFile(this.container.name, this.blob.name, filePath, (error, result, response) => {
-    //                 if (error) {
-    //                     reject(error.message);
-    //                 } else {
-    //                     // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is downloaded.`);
-    //                     resolve();
-    //                 }
-    //             });
-    //         });
-    //     });
-    // }
-
-    // public copyBlobUrl() {
-    //     const url = this.blobService.getUrl(this.container.name, this.blob.name);
-    //     copypaste.copy(url, () => {
-    //         vscode.window.showInformationMessage(`'${url}' is copied to clipboard.`);
-    //     });
-    // }
-
-    // public deleteBlob(storageTreeDataProvider: StorageTreeDataProvider) {
-    //     const yes = "Yes";
-    //     const no = "No";
-    //     vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.blob.name}?`,
-    //         { title: yes },
-    //         { title: no, isCloseAffordance: true },
-    //     ).then((selection) => {
-    //         switch (selection && selection.title) {
-    //             case yes:
-    //                 vscode.window.withProgress({
-    //                     title: `Deleting blob [${this.blob.name}] ...`,
-    //                     location: vscode.ProgressLocation.Window,
-    //                 }, async (progress) => {
-    //                     await new Promise((resolve, reject) => {
-    //                         this.blobService.deleteBlob(this.container.name, this.blob.name, (error, response) => {
-    //                             if (error) {
-    //                                 reject(error.message);
-    //                             } else {
-    //                                 // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is deleted.`);
-    //                                 storageTreeDataProvider.refresh(this.blobContainerNode);
-    //                                 resolve();
-    //                             }
-    //                         });
-    //                     });
-    //                 });
-    //                 break;
-    //             default:
-    //         }
-    //     });
-    // }
+    public deleteDirectory(storageTreeDataProvider: StorageTreeDataProvider) {
+        const yes = "Yes";
+        const no = "No";
+        vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.directory.name}?`,
+            { title: yes },
+            { title: no, isCloseAffordance: true },
+        ).then((selection) => {
+            switch (selection && selection.title) {
+                case yes:
+                    vscode.window.withProgress({
+                        title: `Deleting directory [${this.directory.name}] ...`,
+                        location: vscode.ProgressLocation.Window,
+                    }, async (progress) => {
+                        await new Promise((resolve, reject) => {
+                            this.fileService.deleteDirectoryIfExists(this.fileShare.name, path.join(this.directoryPath, this.directory.name), (error, response) => {
+                                if (error) {
+                                    vscode.window.showErrorMessage(error.message);
+                                    reject(error.message);
+                                } else {
+                                    storageTreeDataProvider.refresh(this.fileShareOrDirectoryNode);
+                                    resolve();
+                                }
+                            });
+                        });
+                    });
+                    break;
+                default:
+            }
+        });
+    }
 }

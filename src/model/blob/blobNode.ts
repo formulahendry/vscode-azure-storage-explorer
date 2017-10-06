@@ -56,6 +56,7 @@ export class BlobNode implements INode {
             await new Promise((resolve, reject) => {
                 this.blobService.getBlobToLocalFile(this.container.name, this.blob.name, filePath, (error, result, response) => {
                     if (error) {
+                        vscode.window.showErrorMessage(error.message);
                         reject(error.message);
                     } else {
                         // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is downloaded.`);
@@ -89,6 +90,7 @@ export class BlobNode implements INode {
                         await new Promise((resolve, reject) => {
                             this.blobService.deleteBlob(this.container.name, this.blob.name, (error, response) => {
                                 if (error) {
+                                    vscode.window.showErrorMessage(error.message);
                                     reject(error.message);
                                 } else {
                                     // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is deleted.`);

@@ -21,7 +21,7 @@ export class FileShareNode implements INode {
             label: this.fileShare.name,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "fileShare",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureFileShare_16x.png"),
         };
     }
 
@@ -40,74 +40,42 @@ export class FileShareNode implements INode {
         // });
     }
 
-    // public async uploadBlob(storageTreeDataProvider: StorageTreeDataProvider) {
-    //     const options: vscode.OpenDialogOptions = {
-    //         openLabel: "Upload",
-    //     };
-    //     const filePathUri = await vscode.window.showOpenDialog(options);
-    //     if (!filePathUri) {
-    //         return;
-    //     }
+    public async uploadFile(storageTreeDataProvider: StorageTreeDataProvider) {
+        FileUtility.uploadFile(storageTreeDataProvider, this.fileShare, this.fileService, this, "");
+    }
 
-    //     const filePath = filePathUri[0].fsPath;
-    //     if (!fs.existsSync(filePath)) {
-    //         vscode.window.showWarningMessage(`${filePath} does not exist.`);
-    //         return;
-    //     }
-    //     vscode.window.showInputBox({
-    //         prompt: "Enter blob name",
-    //         value: path.basename(filePath),
-    //     }).then(async (blobName: string) => {
-    //         if (!blobName) {
-    //             return;
-    //         }
-    //         vscode.window.withProgress({
-    //             title: `Uploading ${filePath} to ${this.container.name} ...`,
-    //             location: vscode.ProgressLocation.Window,
-    //         }, async (progress) => {
-    //             await new Promise((resolve, reject) => {
-    //                 this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
-    //                     if (error) {
-    //                         reject(error.message);
-    //                     } else {
-    //                         // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
-    //                         storageTreeDataProvider.refresh(this);
-    //                         resolve();
-    //                     }
-    //                 });
-    //             });
-    //         });
-    //     });
-    // }
+    public async createDirectory(storageTreeDataProvider: StorageTreeDataProvider) {
+        FileUtility.createDirectory(storageTreeDataProvider, this.fileShare, this.fileService, this, "");
+    }
 
-    // public deleteContainer(storageTreeDataProvider: StorageTreeDataProvider) {
-    //     const yes = "Yes";
-    //     const no = "No";
-    //     vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.container.name}?`,
-    //         { title: yes },
-    //         { title: no, isCloseAffordance: true },
-    //     ).then((selection) => {
-    //         switch (selection && selection.title) {
-    //             case yes:
-    //                 vscode.window.withProgress({
-    //                     title: `Deleting container [${this.container.name}] ...`,
-    //                     location: vscode.ProgressLocation.Window,
-    //                 }, async (progress) => {
-    //                     await new Promise((resolve, reject) => {
-    //                         this.blobService.deleteContainer(this.container.name, (error, response) => {
-    //                             if (error) {
-    //                                 reject(error.message);
-    //                             } else {
-    //                                 // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is deleted.`);
-    //                                 storageTreeDataProvider.refresh(this.blobContainerLabelNode);
-    //                                 resolve();
-    //                             }
-    //                         });
-    //                     });
-    //                 });
-    //                 break;
-    //             default:
-    //         }
-    //     });
-    // }
+    public deleteFileShare(storageTreeDataProvider: StorageTreeDataProvider) {
+        const yes = "Yes";
+        const no = "No";
+        vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.fileShare.name}?`,
+            { title: yes },
+            { title: no, isCloseAffordance: true },
+        ).then((selection) => {
+            switch (selection && selection.title) {
+                case yes:
+                    vscode.window.withProgress({
+                        title: `Deleting file share [${this.fileShare.name}] ...`,
+                        location: vscode.ProgressLocation.Window,
+                    }, async (progress) => {
+                        await new Promise((resolve, reject) => {
+                            this.fileService.deleteShareIfExists(this.fileShare.name, (error, response) => {
+                                if (error) {
+                                    vscode.window.showErrorMessage(error.message);
+                                    reject(error.message);
+                                } else {
+                                    storageTreeDataProvider.refresh(this.fileShareLabelNode);
+                                    resolve();
+                                }
+                            });
+                        });
+                    });
+                    break;
+                default:
+            }
+        });
+    }
 }

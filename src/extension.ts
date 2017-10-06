@@ -5,6 +5,9 @@ import { BlobContainerLabelNode } from "./model/blob/blobContainerLabelNode";
 import { BlobContainerNode } from "./model/blob/blobContainerNode";
 import { BlobNode } from "./model/blob/blobNode";
 import { FileNode } from "./model/file/fileNode";
+import { DirectoryNode } from "./model/file/directoryNode";
+import { FileShareNode } from "./model/file/fileShareNode";
+import { FileShareLabelNode } from "./model/file/fileShareLabelNode";
 import { INode } from "./model/INode";
 import { StorageTreeDataProvider} from "./storageTreeDataProvider";
 
@@ -63,6 +66,41 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.downloadFile", (fileNode: FileNode) => {
         AppInsightsClient.sendEvent("downloadFile");
         fileNode.downloadFile();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.copyFileUrl", (fileNode: FileNode) => {
+        AppInsightsClient.sendEvent("copyFileUrl");
+        fileNode.copyFileUrl();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.deleteFile", (fileNode: FileNode) => {
+        AppInsightsClient.sendEvent("deleteFile");
+        fileNode.deleteFile(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.deleteDirectory", (directoryNode: DirectoryNode) => {
+        AppInsightsClient.sendEvent("deleteDirectory");
+        directoryNode.deleteDirectory(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.deleteFileShare", (fileShareNode: FileShareNode) => {
+        AppInsightsClient.sendEvent("deleteFileShare");
+        fileShareNode.deleteFileShare(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.uploadFile", (fileShareOrDirectoryNode: DirectoryNode | FileShareNode) => {
+        AppInsightsClient.sendEvent("uploadFile");
+        fileShareOrDirectoryNode.uploadFile(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.createDirectory", (fileShareOrDirectoryNode: DirectoryNode | FileShareNode) => {
+        AppInsightsClient.sendEvent("createDirectory");
+        fileShareOrDirectoryNode.createDirectory(storageTreeDataProvider);
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand("azure-storage-explorer.createFileShare", (fileShareLabelNode: FileShareLabelNode) => {
+        AppInsightsClient.sendEvent("createFileShare");
+        fileShareLabelNode.createFileShare(storageTreeDataProvider);
     }));
 }
 

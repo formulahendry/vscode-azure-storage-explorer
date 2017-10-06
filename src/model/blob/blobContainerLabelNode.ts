@@ -50,6 +50,7 @@ export class BlobContainerLabelNode implements INode {
                 await new Promise((resolve, reject) => {
                     blobService.createContainerIfNotExists(containerName, (error, result, response) => {
                         if (error) {
+                            vscode.window.showErrorMessage(error.message);
                             reject(error.message);
                         } else {
                             // vscode.window.showInformationMessage(`Container [${containerName}] is created.`);

@@ -30,4 +30,74 @@ export class FileUtility {
             });
         });
     }
+
+    public static async uploadFile(storageTreeDataProvider: StorageTreeDataProvider,
+        fileShare: azureStorageTypings.services.file.FileService.ShareResult,
+        fileService: azureStorageTypings.services.file.FileService,
+        fileShareOrDirectoryNode: INode,
+        directoryPath: string) {
+        const options: vscode.OpenDialogOptions = {
+            openLabel: "Upload",
+        };
+        const filePathUri = await vscode.window.showOpenDialog(options);
+        if (!filePathUri) {
+            return;
+        }
+
+        const filePath = filePathUri[0].fsPath;
+        if (!fs.existsSync(filePath)) {
+            vscode.window.showWarningMessage(`${filePath} does not exist.`);
+            return;
+        }
+        const fileName = path.basename(filePath);
+        if (!fileName) {
+            return;
+        }
+        vscode.window.withProgress({
+            title: `Uploading ${filePath} to ${fileShare.name} ...`,
+            location: vscode.ProgressLocation.Window,
+        }, async (progress) => {
+            await new Promise((resolve, reject) => {
+                fileService.createFileFromLocalFile(fileShare.name, directoryPath, fileName, filePath, (error, result, response) => {
+                    if (error) {
+                        vscode.window.showErrorMessage(error.message);
+                        reject(error.message);
+                    } else {
+                        storageTreeDataProvider.refresh(fileShareOrDirectoryNode);
+                        resolve();
+                    }
+                });
+            });
+        });
+    }
+
+    public static async createDirectory(storageTreeDataProvider: StorageTreeDataProvider,
+        fileShare: azureStorageTypings.services.file.FileService.ShareResult,
+        fileService: azureStorageTypings.services.file.FileService,
+        fileShareOrDirectoryNode: INode,
+        directoryPath: string) {
+        vscode.window.showInputBox({
+            prompt: "Enter directory name",
+        }).then(async (directoryName: string) => {
+            if (!directoryName) {
+                return;
+            }
+            vscode.window.withProgress({
+                title: `Creating directory [${directoryName}] ...`,
+                location: vscode.ProgressLocation.Window,
+            }, async (progress) => {
+                await new Promise((resolve, reject) => {
+                    fileService.createDirectoryIfNotExists(fileShare.name, path.join(directoryPath, directoryName), (error, result, response) => {
+                        if (error) {
+                            vscode.window.showErrorMessage(error.message);
+                            reject(error.message);
+                        } else {
+                            storageTreeDataProvider.refresh(fileShareOrDirectoryNode);
+                            resolve();
+                        }
+                    });
+                });
+            });
+        });
+    }
 }

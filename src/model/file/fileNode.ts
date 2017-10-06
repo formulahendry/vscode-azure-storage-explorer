@@ -22,11 +22,6 @@ export class FileNode implements INode {
     public getTreeItem(): vscode.TreeItem {
         return {
             label: this.file.name,
-            command: {
-                command: "azure-storage-explorer.getBlob",
-                title: "",
-                arguments: [this],
-            },
             contextValue: "file",
             iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "Document_16x.png"),
         };
@@ -35,10 +30,6 @@ export class FileNode implements INode {
     public getChildren(azureAccount: AzureAccount): INode[] {
         return [];
     }
-
-    // public getBlob() {
-    //     Utility.appendLine(JSON.stringify(this.blob, null, 2));
-    // }
 
     public async downloadFile() {
         const options: vscode.OpenDialogOptions = {
@@ -57,6 +48,7 @@ export class FileNode implements INode {
             await new Promise((resolve, reject) => {
                 this.fileService.getFileToLocalFile(this.fileShare.name, this.directoryPath, this.file.name, filePath, (error, result, response) => {
                     if (error) {
+                        vscode.window.showErrorMessage(error.message);
                         reject(error.message);
                     } else {
                         // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is downloaded.`);
@@ -67,41 +59,41 @@ export class FileNode implements INode {
         });
     }
 
-    // public copyBlobUrl() {
-    //     const url = this.blobService.getUrl(this.container.name, this.blob.name);
-    //     copypaste.copy(url, () => {
-    //         vscode.window.showInformationMessage(`'${url}' is copied to clipboard.`);
-    //     });
-    // }
+    public copyFileUrl() {
+        const url = this.fileService.getUrl(this.fileShare.name, this.directoryPath, this.file.name);
+        copypaste.copy(url, () => {
+            vscode.window.showInformationMessage(`'${url}' is copied to clipboard.`);
+        });
+    }
 
-    // public deleteBlob(storageTreeDataProvider: StorageTreeDataProvider) {
-    //     const yes = "Yes";
-    //     const no = "No";
-    //     vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.blob.name}?`,
-    //         { title: yes },
-    //         { title: no, isCloseAffordance: true },
-    //     ).then((selection) => {
-    //         switch (selection && selection.title) {
-    //             case yes:
-    //                 vscode.window.withProgress({
-    //                     title: `Deleting blob [${this.blob.name}] ...`,
-    //                     location: vscode.ProgressLocation.Window,
-    //                 }, async (progress) => {
-    //                     await new Promise((resolve, reject) => {
-    //                         this.blobService.deleteBlob(this.container.name, this.blob.name, (error, response) => {
-    //                             if (error) {
-    //                                 reject(error.message);
-    //                             } else {
-    //                                 // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is deleted.`);
-    //                                 storageTreeDataProvider.refresh(this.blobContainerNode);
-    //                                 resolve();
-    //                             }
-    //                         });
-    //                     });
-    //                 });
-    //                 break;
-    //             default:
-    //         }
-    //     });
-    // }
+    public deleteFile(storageTreeDataProvider: StorageTreeDataProvider) {
+        const yes = "Yes";
+        const no = "No";
+        vscode.window.showInformationMessage<vscode.MessageItem>(`Are you sure to delete ${this.file.name}?`,
+            { title: yes },
+            { title: no, isCloseAffordance: true },
+        ).then((selection) => {
+            switch (selection && selection.title) {
+                case yes:
+                    vscode.window.withProgress({
+                        title: `Deleting file [${this.file.name}] ...`,
+                        location: vscode.ProgressLocation.Window,
+                    }, async (progress) => {
+                        await new Promise((resolve, reject) => {
+                            this.fileService.deleteFileIfExists(this.fileShare.name, this.directoryPath, this.file.name, (error, response) => {
+                                if (error) {
+                                    vscode.window.showErrorMessage(error.message);
+                                    reject(error.message);
+                                } else {
+                                    storageTreeDataProvider.refresh(this.fileShareOrDirectoryNode);
+                                    resolve();
+                                }
+                            });
+                        });
+                    });
+                    break;
+                default:
+            }
+        });
+    }
 }

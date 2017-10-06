@@ -16,7 +16,7 @@ export class FileShareLabelNode implements INode {
             label: "[File Shares]",
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             contextValue: "fileShareLabel",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureFileShare_16x.png"),
         };
     }
 
@@ -35,24 +35,24 @@ export class FileShareLabelNode implements INode {
         });
     }
 
-    public createContainer(storageTreeDataProvider: StorageTreeDataProvider) {
-        const blobService = azureStorage.createBlobService(this.storageAccount.name, this.storageAccountKeys[0].value);
+    public createFileShare(storageTreeDataProvider: StorageTreeDataProvider) {
+        const fileService = azureStorage.createFileService(this.storageAccount.name, this.storageAccountKeys[0].value);
         vscode.window.showInputBox({
-            prompt: "Enter container name",
-        }).then(async (containerName: string) => {
-            if (!containerName) {
+            prompt: "Enter file share name",
+        }).then(async (fileShareName: string) => {
+            if (!fileShareName) {
                 return;
             }
             vscode.window.withProgress({
-                title: `Creating container [${containerName}] ...`,
+                title: `Creating file share [${fileShareName}] ...`,
                 location: vscode.ProgressLocation.Window,
             }, async (progress) => {
                 await new Promise((resolve, reject) => {
-                    blobService.createContainerIfNotExists(containerName, (error, result, response) => {
+                    fileService.createShareIfNotExists(fileShareName, (error, result, response) => {
                         if (error) {
+                            vscode.window.showErrorMessage(error.message);
                             reject(error.message);
                         } else {
-                            // vscode.window.showInformationMessage(`Container [${containerName}] is created.`);
                             storageTreeDataProvider.refresh(this);
                             resolve();
                         }

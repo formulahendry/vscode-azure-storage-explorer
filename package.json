@@ -93,6 +93,41 @@
         "command": "azure-storage-explorer.downloadFile",
         "title": "Download File",
         "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.uploadFile",
+        "title": "Upload File",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.copyFileUrl",
+        "title": "Copy File Url",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.createDirectory",
+        "title": "Create Directory",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteDirectory",
+        "title": "Delete Directory",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteFile",
+        "title": "Delete File",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.createFileShare",
+        "title": "Create File Share",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteFileShare",
+        "title": "Delete File Share",
+        "category": "Azure Storage"
       }
     ],
     "menus": {
@@ -160,14 +195,64 @@
           "group": "azure-storage@1"
         },
         {
+          "command": "azure-storage-explorer.createFileShare",
+          "when": "view == azureStorage && viewItem == fileShareLabel",
+          "group": "azure-storage@2"
+        },
+        {
           "command": "azure-storage-explorer.refresh",
           "when": "view == azureStorage && viewItem == fileShare",
           "group": "azure-storage@1"
         },
         {
+          "command": "azure-storage-explorer.uploadFile",
+          "when": "view == azureStorage && viewItem == fileShare",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.createDirectory",
+          "when": "view == azureStorage && viewItem == fileShare",
+          "group": "azure-storage@3"
+        },
+        {
+          "command": "azure-storage-explorer.deleteFileShare",
+          "when": "view == azureStorage && viewItem == fileShare",
+          "group": "azure-storage@4"
+        },
+        {
           "command": "azure-storage-explorer.downloadFile",
           "when": "view == azureStorage && viewItem == file",
           "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.copyFileUrl",
+          "when": "view == azureStorage && viewItem == file",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.deleteFile",
+          "when": "view == azureStorage && viewItem == file",
+          "group": "azure-storage@3"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == directory",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.uploadFile",
+          "when": "view == azureStorage && viewItem == directory",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.createDirectory",
+          "when": "view == azureStorage && viewItem == directory",
+          "group": "azure-storage@3"
+        },
+        {
+          "command": "azure-storage-explorer.deleteDirectory",
+          "when": "view == azureStorage && viewItem == directory",
+          "group": "azure-storage@4"
         }
       ]
     },

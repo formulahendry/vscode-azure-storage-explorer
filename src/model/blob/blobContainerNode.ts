@@ -66,6 +66,7 @@ export class BlobContainerNode implements INode {
                 await new Promise((resolve, reject) => {
                     this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
                         if (error) {
+                            vscode.window.showErrorMessage(error.message);
                             reject(error.message);
                         } else {
                             // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
@@ -94,6 +95,7 @@ export class BlobContainerNode implements INode {
                         await new Promise((resolve, reject) => {
                             this.blobService.deleteContainer(this.container.name, (error, response) => {
                                 if (error) {
+                                    vscode.window.showErrorMessage(error.message);
                                     reject(error.message);
                                 } else {
                                     // vscode.window.showInformationMessage(`Blob [${this.blob.name}] is deleted.`);
