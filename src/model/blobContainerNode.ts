@@ -52,23 +52,27 @@ export class BlobContainerNode implements INode {
             vscode.window.showWarningMessage(`${filePath} does not exist.`);
             return;
         }
-        const blobName = path.basename(filePath);
-        if (!blobName) {
-            return;
-        }
-        vscode.window.withProgress({
-            title: `Uploading ${filePath} to ${this.container.name} ...`,
-            location: vscode.ProgressLocation.Window,
-        }, async (progress) => {
-            await new Promise((resolve, reject) => {
-                this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
-                    if (error) {
-                        reject(error.message);
-                    } else {
-                        // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
-                        storageTreeDataProvider.refresh(this);
-                        resolve();
-                    }
+        vscode.window.showInputBox({
+            prompt: "Enter blob name",
+            value: path.basename(filePath),
+        }).then(async (blobName: string) => {
+            if (!blobName) {
+                return;
+            }
+            vscode.window.withProgress({
+                title: `Uploading ${filePath} to ${this.container.name} ...`,
+                location: vscode.ProgressLocation.Window,
+            }, async (progress) => {
+                await new Promise((resolve, reject) => {
+                    this.blobService.createBlockBlobFromLocalFile(this.container.name, blobName, filePath, (error, result, response) => {
+                        if (error) {
+                            reject(error.message);
+                        } else {
+                            // vscode.window.showInformationMessage(`Blob [${blobName}] is uploaded.`);
+                            storageTreeDataProvider.refresh(this);
+                            resolve();
+                        }
+                    });
                 });
             });
         });
