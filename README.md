@@ -1,6 +1,6 @@
 # Azure Storage Explorer
 
-Azure Storage Explorer for VS Code. Currently, it supports management of Azure Blob storage.
+Azure Storage Explorer for VS Code. Currently, it supports management of Azure Blob storage and File storage.
 
 ## Features
 
