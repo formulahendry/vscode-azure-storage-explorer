@@ -6,14 +6,25 @@ Azure Storage Explorer for VS Code. Currently, it supports management of Azure B
 
 * List Subscriptions
 * List Storage Accounts
-* List Blob Contianers
-* Create Blob Container
-* Delete Blob Container
-* List Blobs
-* View Blob information
-* Download Blob
-* Upload Blob
-* Delete Blob
+* Blob storage
+  * List Blob Contianers
+  * Create Blob Container
+  * Delete Blob Container
+  * List Blobs
+  * View Blob information
+  * Download Blob
+  * Upload Blob
+  * Delete Blob
+* File storage
+  * List File Shares
+  * Create File Shares
+  * Delete File Shares
+  * List Directories and Files
+  * Create Directory
+  * Delete Directory
+  * Download File
+  * Upload File
+  * Delete File
 
 ## Prerequisites
 
@@ -26,7 +37,7 @@ Azure Storage Explorer for VS Code. Currently, it supports management of Azure B
   ![sign-in](images/sign-in.PNG)
 
 2. After sign-in, click the `+` button to select Azure Subscription
-3. Wait for a moment, the Blob storage list will be shown
+3. Wait for a moment, the Blob storage and File storage list will be shown
 
   ![explorer](images/explorer.PNG)
 
