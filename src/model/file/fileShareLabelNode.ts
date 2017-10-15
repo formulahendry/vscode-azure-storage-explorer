@@ -3,9 +3,9 @@ import * as path from "path";
 import * as vscode from "vscode";
 import * as StorageAccountModels from "../../../node_modules/azure-arm-storage/lib/models";
 import { StorageTreeDataProvider} from "../../storageTreeDataProvider";
-import { FileShareNode } from "./fileShareNode";
 import { InfoNode } from "../infoNode";
 import { INode } from "../INode";
+import { FileShareNode } from "./fileShareNode";
 
 export class FileShareLabelNode implements INode {
     constructor(private readonly storageAccount: StorageAccountModels.StorageAccount, private readonly storageAccountKeys: StorageAccountModels.StorageAccountKey[]) {

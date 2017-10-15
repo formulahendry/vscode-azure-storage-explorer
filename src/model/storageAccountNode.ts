@@ -5,6 +5,7 @@ import * as StorageAccountModels from "../../node_modules/azure-arm-storage/lib/
 import { BlobContainerLabelNode } from "./blob/blobContainerLabelNode";
 import { FileShareLabelNode } from "./file/fileShareLabelNode";
 import { INode } from "./INode";
+import { TableLabelNode } from "./table/tableLabelNode";
 
 export class StorageAccountNode implements INode {
     constructor(private readonly storageAccount: StorageAccountModels.StorageAccount, private readonly storageAccountKeys: StorageAccountModels.StorageAccountKey[]) {
@@ -21,6 +22,7 @@ export class StorageAccountNode implements INode {
 
     public getChildren(): INode[] {
         return [new BlobContainerLabelNode(this.storageAccount, this.storageAccountKeys),
-                new FileShareLabelNode(this.storageAccount, this.storageAccountKeys)];
+                new FileShareLabelNode(this.storageAccount, this.storageAccountKeys),
+                new TableLabelNode(this.storageAccount, this.storageAccountKeys)];
     }
 }

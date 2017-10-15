@@ -1,6 +1,6 @@
 # Azure Storage Explorer
 
-Azure Storage Explorer for VS Code. Currently, it supports management of Azure Blob storage and File storage.
+Azure Storage Explorer for VS Code. Currently, it supports Azure Blob storage, File storage and limited functions of Table storage.
 
 ## Features
 
@@ -17,14 +17,18 @@ Azure Storage Explorer for VS Code. Currently, it supports management of Azure B
   * Delete Blob
 * File storage
   * List File Shares
-  * Create File Shares
-  * Delete File Shares
+  * Create File Share
+  * Delete File Share
   * List Directories and Files
   * Create Directory
   * Delete Directory
   * Download File
   * Upload File
   * Delete File
+* Table storage
+  * List Tables
+  * Create Table
+  * Delete Table
 
 ## Prerequisites
 

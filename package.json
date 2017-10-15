@@ -1,8 +1,8 @@
 {
   "name": "azure-storage-explorer",
   "displayName": "Azure Storage Explorer",
-  "description": "Manage Azure Storage in VS Code",
-  "version": "0.1.0",
+  "description": "Manage Azure Storage: Blobs, Files, Tables",
+  "version": "0.1.1",
   "publisher": "formulahendry",
   "icon": "logo.png",
   "engines": {
@@ -16,7 +16,7 @@
     "Storage",
     "Blob",
     "File",
-    "Cloud"
+    "Table"
   ],
   "bugs": {
     "url": "https://github.com/formulahendry/vscode-azure-storage-explorer/issues",
@@ -127,6 +127,16 @@
       {
         "command": "azure-storage-explorer.deleteFileShare",
         "title": "Delete File Share",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.createTable",
+        "title": "Create Table",
+        "category": "Azure Storage"
+      },
+      {
+        "command": "azure-storage-explorer.deleteTable",
+        "title": "Delete Table",
         "category": "Azure Storage"
       }
     ],
@@ -253,6 +263,21 @@
           "command": "azure-storage-explorer.deleteDirectory",
           "when": "view == azureStorage && viewItem == directory",
           "group": "azure-storage@4"
+        },
+        {
+          "command": "azure-storage-explorer.refresh",
+          "when": "view == azureStorage && viewItem == tableLabel",
+          "group": "azure-storage@1"
+        },
+        {
+          "command": "azure-storage-explorer.createTable",
+          "when": "view == azureStorage && viewItem == tableLabel",
+          "group": "azure-storage@2"
+        },
+        {
+          "command": "azure-storage-explorer.deleteTable",
+          "when": "view == azureStorage && viewItem == table",
+          "group": "azure-storage@1"
         }
       ]
     },

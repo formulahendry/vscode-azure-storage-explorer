@@ -5,10 +5,10 @@ import * as vscode from "vscode";
 import * as azureStorageTypings from "../../../node_modules/azure-storage/typings/azure-storage/azure-storage";
 import { AzureAccount } from "../../azure-account.api";
 import { StorageTreeDataProvider } from "../../storageTreeDataProvider";
-import { FileNode } from "./fileNode";
-import { FileUtility } from "./fileUtility";
 import { InfoNode } from "../infoNode";
 import { INode } from "../INode";
+import { FileNode } from "./fileNode";
+import { FileUtility } from "./fileUtility";
 
 export class FileShareNode implements INode {
     constructor(private readonly fileShare: azureStorageTypings.services.file.FileService.ShareResult,

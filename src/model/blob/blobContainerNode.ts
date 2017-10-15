@@ -5,9 +5,9 @@ import * as vscode from "vscode";
 import * as azureStorageTypings from "../../../node_modules/azure-storage/typings/azure-storage/azure-storage";
 import { AzureAccount } from "../../azure-account.api";
 import { StorageTreeDataProvider } from "../../storageTreeDataProvider";
-import { BlobNode } from "./blobNode";
 import { InfoNode } from "../infoNode";
 import { INode } from "../INode";
+import { BlobNode } from "./blobNode";
 
 export class BlobContainerNode implements INode {
     constructor(private readonly container: azureStorageTypings.services.blob.blobservice.BlobService.ContainerResult,

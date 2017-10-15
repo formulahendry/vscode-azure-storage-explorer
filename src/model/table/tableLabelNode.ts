@@ -5,55 +5,54 @@ import * as StorageAccountModels from "../../../node_modules/azure-arm-storage/l
 import { StorageTreeDataProvider} from "../../storageTreeDataProvider";
 import { InfoNode } from "../infoNode";
 import { INode } from "../INode";
-import { BlobContainerNode } from "./blobContainerNode";
+import { TableNode } from "./tableNode";
 
-export class BlobContainerLabelNode implements INode {
+export class TableLabelNode implements INode {
     constructor(private readonly storageAccount: StorageAccountModels.StorageAccount, private readonly storageAccountKeys: StorageAccountModels.StorageAccountKey[]) {
     }
 
     public getTreeItem(): vscode.TreeItem {
         return {
-            label: "[Blob Containers]",
+            label: "[Tables]",
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-            contextValue: "blobContainerLabel",
-            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureBlob_16x.png"),
+            contextValue: "tableLabel",
+            iconPath: path.join(__filename, "..", "..", "..", "..", "..", "resources", "AzureTable_16x.png"),
         };
     }
 
     public getChildren(): Promise<INode[]> {
-        const blobService = azureStorage.createBlobService(this.storageAccount.name, this.storageAccountKeys[0].value);
+        const tableService = azureStorage.createTableService(this.storageAccount.name, this.storageAccountKeys[0].value);
         return new Promise<INode[]>((resolve, reject) => {
-            blobService.listContainersSegmented(null, (error, result, response) => {
+            tableService.listTablesSegmented(null, (error, result, response) => {
                 if (error) {
-                    resolve([new InfoNode(`Failed to list containers: ${error})`)]);
+                    resolve([new InfoNode(`Failed to list tables: ${error})`)]);
                 }
-                const containerNodes = result.entries.map((container) => {
-                    return new BlobContainerNode(container, blobService, this);
+                const tableNodes = result.entries.map((table) => {
+                    return new TableNode(table, tableService, this);
                 });
-                resolve(containerNodes);
+                resolve(tableNodes);
             });
         });
     }
 
-    public createContainer(storageTreeDataProvider: StorageTreeDataProvider) {
-        const blobService = azureStorage.createBlobService(this.storageAccount.name, this.storageAccountKeys[0].value);
+    public createTable(storageTreeDataProvider: StorageTreeDataProvider) {
+        const tableService = azureStorage.createTableService(this.storageAccount.name, this.storageAccountKeys[0].value);
         vscode.window.showInputBox({
-            prompt: "Enter container name",
-        }).then(async (containerName: string) => {
-            if (!containerName) {
+            prompt: "Enter table name",
+        }).then(async (tableName: string) => {
+            if (!tableName) {
                 return;
             }
             vscode.window.withProgress({
-                title: `Creating container [${containerName}] ...`,
+                title: `Creating table [${tableName}] ...`,
                 location: vscode.ProgressLocation.Window,
             }, async (progress) => {
                 await new Promise((resolve, reject) => {
-                    blobService.createContainerIfNotExists(containerName, (error, result, response) => {
+                    tableService.createTableIfNotExists(tableName, (error, result, response) => {
                         if (error) {
                             vscode.window.showErrorMessage(error.message);
                             reject(error.message);
                         } else {
-                            // vscode.window.showInformationMessage(`Container [${containerName}] is created.`);
                             storageTreeDataProvider.refresh(this);
                             resolve();
                         }

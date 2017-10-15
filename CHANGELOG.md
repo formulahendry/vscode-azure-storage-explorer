@@ -1,3 +1,6 @@
+## 0.1.1 (2017-10-15)
+* Add basic support for Azure Tables
+
 ## 0.1.0 (2017-10-07)
 * Add support for Azure Files
 
