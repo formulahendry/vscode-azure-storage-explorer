@@ -1,3 +1,6 @@
+## 0.1.2 (2017-10-18)
+* Add 'refresh' and 'selectSubscriptions' in activationEvents
+
 ## 0.1.1 (2017-10-15)
 * Add basic support for Azure Tables
 

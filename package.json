@@ -2,7 +2,7 @@
   "name": "azure-storage-explorer",
   "displayName": "Azure Storage Explorer",
   "description": "Manage Azure Storage: Blobs, Files, Tables",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "formulahendry",
   "icon": "logo.png",
   "engines": {
@@ -28,7 +28,9 @@
     "url": "https://github.com/formulahendry/vscode-azure-storage-explorer.git"
   },
   "activationEvents": [
-    "onView:azureStorage"
+    "onView:azureStorage",
+    "onCommand:azure-storage-explorer.refresh",
+    "onCommand:azure-storage-explorer.selectSubscriptions"
   ],
   "main": "./out/src/extension",
   "contributes": {
